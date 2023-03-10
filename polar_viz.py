@@ -11,7 +11,8 @@ def polar_to_hsv(img):
     assert len(img.shape) == 2, len(img.shape)
     
     # Demosaic
-    # output: list of about (H/2, W/2), corresponding to 0, 45, 90, 135
+    # output: list of arrays of size about (H/2, W/2), corresponding to 0, 45, 90, 135
+    # trimmed to blocks of size 16 for video compression compatibility
     H, W = img.shape
     t = H % 32 // 2
     l = W % 32 // 2
@@ -25,7 +26,6 @@ def polar_to_hsv(img):
 
     # Convert to Stokes vector (I, Q, U, V), assuming V=0
     # See https://en.wikipedia.org/wiki/Stokes_parameters
-    # output shape: (H, W, 3), channels: I, Q, U
     I = img.sum(axis=0) * 0.5
     Q = img_000.astype(np.float32) - img_090
     U = img_045.astype(np.float32) - img_135
@@ -36,7 +36,7 @@ def polar_to_hsv(img):
     img_aolp = np.mod(0.5 * np.arctan2(U, Q).astype(np.float32), np.pi)
 
     # Visualize in HSV color space
-    h = img_aolp * (360 / np.pi) # [0, pi) to [0, 360)
+    h = img_aolp * (360 / np.pi) # map [0, pi) to [0, 360)
     s = img_dolp # [0, 1)
     v = img_intensity # [0, 1)
     hsv = cv2.merge([h, s, v])
