@@ -17,7 +17,7 @@ saturation = np.sqrt(X**2 + Y**2)
 saturation[saturation > 1] = 0
 value = np.ones_like(X)
 hsv = cv2.merge([hue, saturation, value])
-img = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+img = cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB)
 img = cv2.copyMakeBorder(img, pad, pad, pad, pad, cv2.BORDER_CONSTANT, value=(1, 1, 1))
 
 plt.figure(figsize=(4, 4), dpi=100, constrained_layout=True)

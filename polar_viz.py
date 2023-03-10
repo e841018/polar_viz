@@ -40,7 +40,7 @@ def polar_to_hsv(img):
     s = img_dolp # [0, 1)
     v = img_intensity # [0, 1)
     hsv = cv2.merge([h, s, v])
-    img_vis = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+    img_vis = cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB)
     img_vis = (img_vis * 255).astype(np.uint8)
 
     return img_vis
