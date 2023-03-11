@@ -12,7 +12,7 @@ def polar_to_hsv(img):
     
     # Demosaic
     # output: list of arrays of size about (H/2, W/2), corresponding to 0, 45, 90, 135
-    # trimmed to blocks of size 16 for video compression compatibility
+    # cropped to blocks of size 16 for video encoding compatibility
     H, W = img.shape
     t = H % 32 // 2
     l = W % 32 // 2
@@ -37,8 +37,8 @@ def polar_to_hsv(img):
 
     # Visualize in HSV color space
     h = img_aolp * (360 / np.pi) # map [0, pi) to [0, 360)
-    s = img_dolp # [0, 1)
-    v = img_intensity # [0, 1)
+    s = img_dolp # [0, 1]
+    v = img_intensity # [0, 1]
     hsv = cv2.merge([h, s, v])
     img_vis = cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB)
     img_vis = (img_vis * 255).astype(np.uint8)
