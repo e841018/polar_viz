@@ -4,6 +4,8 @@
 import imageio, numpy as np, cv2
 
 def polar_to_hsv(img):
+    # TODO: gamma correction
+
     # Make sure shape = (H, W), dtype = np.float32
     if len(img.shape) == 3 and img.shape[2] == 3:
         img = img[:, :, 0]
@@ -35,6 +37,9 @@ def polar_to_hsv(img):
     # Definitions of DoLP and AoLP same as https://github.com/elerac/polanalyser
     img_intensity = np.clip(I * (0.5 / 255), 0, 1)
     img_dolp = np.sqrt(Q ** 2 + U ** 2) / I
+    # Theoretically DoLP should be in interval [0, 1],
+    # but errors could make estimated DoLP exceed 1.
+    img_dolp = np.clip(img_dolp, 0, 1)
     img_aolp = np.mod(0.5 * np.arctan2(U, Q), np.pi)
 
     # Visualize in HSV color space
